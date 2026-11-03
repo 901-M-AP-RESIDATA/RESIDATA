@@ -1,0 +1,15 @@
+# =====================================================================
+# ResiData - Dependencias opcionales de IA / vision artificial
+# Instalar SOLO si se desea inferencia real con YOLO.
+# Sin estas dependencias el backend arranca en MODO SIMULADO.
+#
+#   pip install -r requirements-ml.txt
+#
+# Notas:
+#  * ultralytics arrastra torch/torchvision (varios GB).
+#  * PyTorch requiere una version de Python soportada (3.9-3.12 tipicamente).
+#    Si usas una version mas reciente, usa el backend en modo simulado o
+#    crea el entorno virtual con Python 3.12.
+# =====================================================================
+ultralytics>=8.2
+opencv-python>=4.9
