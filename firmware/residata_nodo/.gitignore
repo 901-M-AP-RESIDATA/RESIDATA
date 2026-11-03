@@ -1,0 +1,14 @@
+# ResiData - Nodo IoT
+# Archivos que nunca deben versionarse.
+
+# Credenciales y configuracion local
+secrets.h
+
+# Directorios de compilacion de Arduino IDE / PlatformIO
+build/
+dist/
+.pio/
+.vscode/.browse.*
+
+*.elf
+*.bin
