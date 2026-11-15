@@ -43,20 +43,40 @@ def main() -> int:
         existente = db.scalar(
             select(Usuario).where(func.lower(Usuario.correo) == correo)
         )
-        if existente is not None:
+        if existente is None:
+            admin = Usuario(
+                nombre=config.admin_nombre.strip(),
+                correo=correo,
+                contrasena_hash=hashear_contrasena(config.admin_contrasena),
+                rol_id=rol.id,
+                activo=True,
+            )
+            db.add(admin)
+            db.flush()
+            logger.info("Administrador creado: %s (id=%s).", correo, admin.id)
+        else:
             logger.info("El administrador '%s' ya existe (id=%s).", correo, existente.id)
-            return 0
 
-        admin = Usuario(
-            nombre=config.admin_nombre.strip(),
-            correo=correo,
-            contrasena_hash=hashear_contrasena(config.admin_contrasena),
-            rol_id=rol.id,
-            activo=True,
-        )
-        db.add(admin)
-        db.flush()
-        logger.info("Administrador creado: %s (id=%s).", correo, admin.id)
+        # --- Crear Operador inicial ---
+        rol_operador = db.scalar(select(Rol).where(Rol.nombre == "operador"))
+        if rol_operador is not None:
+            correo_operador = "operador@residata.local"
+            existente_operador = db.scalar(
+                select(Usuario).where(func.lower(Usuario.correo) == correo_operador)
+            )
+            if existente_operador is None:
+                operador = Usuario(
+                    nombre="Operador de Turno",
+                    correo=correo_operador,
+                    contrasena_hash=hashear_contrasena("Operador123!"),
+                    rol_id=rol_operador.id,
+                    activo=True,
+                )
+                db.add(operador)
+                db.flush()
+                logger.info("Operador creado: %s (id=%s).", correo_operador, operador.id)
+            else:
+                logger.info("El operador '%s' ya existe (id=%s).", correo_operador, existente_operador.id)
 
     return 0
 

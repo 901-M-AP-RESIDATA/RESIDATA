@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { ErrorApi } from '#lib/api/cliente.ts';
 	import {
@@ -17,6 +18,7 @@
 	import Insignia from '#lib/components/Insignia.svelte';
 	import Modal from '#lib/components/Modal.svelte';
 	import Tarjeta from '#lib/components/Tarjeta.svelte';
+	import { sesion } from '#lib/stores/sesion.svelte.ts';
 	import { toasts } from '#lib/stores/toast.svelte.ts';
 	import type {
 		Contenedor,
@@ -24,6 +26,13 @@
 		EstadoContenedorValor
 	} from '#lib/tipos/index.ts';
 	import { formatearFechaHora } from '#lib/util/formato.ts';
+
+	// Solo administradores pueden ver la gestion de contenedores
+	$effect(() => {
+		if (sesion.inicializado && sesion.autenticado && !sesion.esAdministrador) {
+			void goto('/dashboard', { replaceState: true });
+		}
+	});
 
 	const opcionesEstado = [
 		{ valor: 'activo', etiqueta: 'Activo' },

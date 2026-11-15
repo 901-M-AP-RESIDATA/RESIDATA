@@ -18,7 +18,7 @@
 
 	const items: ItemNav[] = [
 		{ ruta: '/dashboard', etiqueta: 'Dashboard', icono: 'M3 13h8V3H3v10Zm10 8h8V11h-8v10ZM3 21h8v-6H3v6Zm10-12h8V3h-8v6Z' },
-		{ ruta: '/contenedores', etiqueta: 'Contenedores', icono: 'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13' },
+		{ ruta: '/contenedores', etiqueta: 'Contenedores', icono: 'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13', soloAdmin: true },
 		{ ruta: '/historico', etiqueta: 'Historico', icono: 'M12 8v4l3 2M12 3a9 9 0 1 0 9 9' },
 		{ ruta: '/alertas', etiqueta: 'Alertas', icono: 'M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L14.7 3.9a2 2 0 0 0-3.4 0Z' },
 		{ ruta: '/usuarios', etiqueta: 'Usuarios', icono: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 16 11', soloAdmin: true }

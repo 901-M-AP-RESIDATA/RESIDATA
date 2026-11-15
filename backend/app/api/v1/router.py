@@ -19,6 +19,7 @@ from app.api.v1 import (
     historico,
     salud,
     usuarios,
+    telemetria,
     ws,
 )
 
@@ -32,4 +33,5 @@ api_router.include_router(dispositivo.router)
 api_router.include_router(historico.router)
 api_router.include_router(alertas.router)
 api_router.include_router(dashboard.router)
+api_router.include_router(telemetria.router)
 api_router.include_router(ws.router)

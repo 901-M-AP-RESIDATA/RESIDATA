@@ -25,6 +25,7 @@ from app.db.modelos import (
 from app.schemas.alerta import AlertaLeer
 from app.schemas.dispositivo import RespuestaClasificacion
 from app.schemas.historico import HistoricoClasificacionLeer
+from app.db.mongo import guardar_telemetria_iot
 from app.services import almacenamiento, ia_yolo
 from app.services.tiempo_real import gestor
 
@@ -177,6 +178,23 @@ def procesar_lectura(
         categoria.nombre,
         resultado.confianza,
         contenedor.nombre,
+    )
+
+    # Persistir telemetria no estructurada en MongoDB (NoSQL)
+    guardar_telemetria_iot(
+        contenedor_id=contenedor.id,
+        contenedor_nombre=contenedor.nombre,
+        clasificacion_id=historico.id,
+        categoria_nombre=categoria.nombre,
+        confianza=float(resultado.confianza),
+        angulo=angulo,
+        tiempo_inferencia_ms=resultado.tiempo_inferencia_ms,
+        alerta_generada=alerta_generada,
+        metadatos_extra={
+            "ruta_imagen": historico.ruta_imagen,
+            "corregida_manualmente": False,
+            "simulada": resultado.simulada,
+        },
     )
 
     return RespuestaClasificacion(

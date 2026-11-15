@@ -1,11 +1,9 @@
-"""Endpoints de gestion de contenedores (nodos ESP32-CAM)."""
+from typing import Annotated
 
-from __future__ import annotations
+from fastapi import APIRouter, Depends, Query, status
 
-from fastapi import APIRouter, Query, status
-
-from app.core.deps import SesionBd, UsuarioActual
-from app.db.modelos import Contenedor
+from app.core.deps import SesionBd, requiere_admin
+from app.db.modelos import Contenedor, Usuario
 from app.schemas.comun import RespuestaPaginada, construir_paginada
 from app.schemas.contenedor import (
     ContenedorActualizar,
@@ -17,6 +15,8 @@ from app.schemas.contenedor import (
 from app.services import contenedores as servicio_contenedores
 
 router = APIRouter(prefix="/contenedores", tags=["Contenedores"])
+
+AdminActual = Annotated[Usuario, Depends(requiere_admin)]
 
 
 def _con_api_key(contenedor: Contenedor, api_key: str) -> ContenedorConApiKey:
@@ -34,7 +34,7 @@ def _con_api_key(contenedor: Contenedor, api_key: str) -> ContenedorConApiKey:
 @router.get("", response_model=RespuestaPaginada[ContenedorLeer], summary="Listar contenedores")
 def listar_contenedores(
     base_datos: SesionBd,
-    _usuario: UsuarioActual,
+    _admin: AdminActual,
     pagina: int = Query(default=1, ge=1),
     limite: int = Query(default=20, ge=1, le=1000),
 ) -> RespuestaPaginada[ContenedorLeer]:
@@ -52,7 +52,7 @@ def listar_contenedores(
     summary="Registrar contenedor",
 )
 def crear_contenedor(
-    base_datos: SesionBd, _usuario: UsuarioActual, datos: ContenedorCrear
+    base_datos: SesionBd, _admin: AdminActual, datos: ContenedorCrear
 ) -> ContenedorConApiKey:
     """Registra un contenedor y devuelve su API key (solo se muestra una vez)."""
     contenedor, api_key = servicio_contenedores.crear(base_datos, datos)
@@ -65,7 +65,7 @@ def crear_contenedor(
     summary="Detalle de contenedor",
 )
 def obtener_contenedor(
-    base_datos: SesionBd, _usuario: UsuarioActual, contenedor_id: int
+    base_datos: SesionBd, _admin: AdminActual, contenedor_id: int
 ) -> EstadoContenedorDetalle:
     """Devuelve el detalle ampliado de un contenedor (actividad y ultima categoria)."""
     return servicio_contenedores.obtener_detalle(base_datos, contenedor_id)
@@ -76,7 +76,7 @@ def obtener_contenedor(
 )
 def actualizar_contenedor(
     base_datos: SesionBd,
-    _usuario: UsuarioActual,
+    _admin: AdminActual,
     contenedor_id: int,
     datos: ContenedorActualizar,
 ) -> ContenedorLeer:
@@ -89,7 +89,7 @@ def actualizar_contenedor(
     "/{contenedor_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Eliminar contenedor"
 )
 def eliminar_contenedor(
-    base_datos: SesionBd, _usuario: UsuarioActual, contenedor_id: int
+    base_datos: SesionBd, _admin: AdminActual, contenedor_id: int
 ) -> None:
     """Elimina un contenedor."""
     servicio_contenedores.eliminar(base_datos, contenedor_id)
@@ -101,7 +101,7 @@ def eliminar_contenedor(
     summary="Regenerar API key",
 )
 def regenerar_clave(
-    base_datos: SesionBd, _usuario: UsuarioActual, contenedor_id: int
+    base_datos: SesionBd, _admin: AdminActual, contenedor_id: int
 ) -> ContenedorConApiKey:
     """Genera una nueva API key para el contenedor (invalida la anterior)."""
     contenedor, api_key = servicio_contenedores.regenerar_clave(base_datos, contenedor_id)

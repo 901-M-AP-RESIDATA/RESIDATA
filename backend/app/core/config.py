@@ -39,6 +39,11 @@ class Configuracion(BaseSettings):
         default="postgresql+psycopg://postgres:postgres@127.0.0.1:5432/residata",
         description="Cadena de conexion SQLAlchemy (driver psycopg 3).",
     )
+    mongo_url: str = Field(
+        default="mongodb://admin:mongopassword123@127.0.0.1:27017/residata_telemetria?authSource=admin",
+        description="Cadena de conexion de MongoDB.",
+    )
+    mongo_db_nombre: str = "residata_telemetria"
 
     # --- Seguridad / JWT ----------------------------------------------
     jwt_secreto: str = "cambiar-este-secreto-en-produccion"

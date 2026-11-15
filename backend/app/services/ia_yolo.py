@@ -120,11 +120,22 @@ class DetectorResiduos:
 
     @staticmethod
     def _mapear_clase(etiqueta: str) -> str:  # pragma: no cover
-        """Traduce etiquetas del dataset a las tres categorias del sistema."""
+        """Traduce etiquetas del dataset o COCO a las tres categorias del sistema."""
         mapa = {
+            # Organicos / Alimentos
             "organico": "Organico",
             "organi": "Organico",
             "food": "Organico",
+            "apple": "Organico",
+            "banana": "Organico",
+            "orange": "Organico",
+            "broccoli": "Organico",
+            "carrot": "Organico",
+            "sandwich": "Organico",
+            "pizza": "Organico",
+            "donut": "Organico",
+            "cake": "Organico",
+            # Inorganicos / Reciclables
             "vidrio": "Inorganico",
             "glass": "Inorganico",
             "plastico": "Inorganico",
@@ -132,9 +143,22 @@ class DetectorResiduos:
             "metal": "Inorganico",
             "papel": "Inorganico",
             "paper": "Inorganico",
+            "bottle": "Inorganico",
+            "cup": "Inorganico",
+            "can": "Inorganico",
+            "wine glass": "Inorganico",
+            "fork": "Inorganico",
+            "knife": "Inorganico",
+            "spoon": "Inorganico",
+            "bowl": "Inorganico",
+            "book": "Inorganico",
+            "scissors": "Inorganico",
+            "cell phone": "Inorganico",
+            # Peligrosos
             "bateria": "Peligroso",
             "battery": "Peligroso",
             "peligroso": "Peligroso",
+            "pila": "Peligroso",
         }
         return mapa.get(etiqueta.strip().lower(), "Peligroso")
 

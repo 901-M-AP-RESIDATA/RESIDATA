@@ -46,7 +46,7 @@ ON CONFLICT (categoria_id) DO NOTHING;
 -- ---------------------------------------------------------------------
 INSERT INTO contenedores (nombre, ubicacion, estado, api_key_hash, ultima_conexion) VALUES
     ('Contenedor Patio A',   'Edificio A - Patio central', 'activo',
-     '$argon2id$v=19$m=65536,t=3,p=4$seed-hash-contenedor-patio-a', now() - interval '5 minutes'),
+     '03fa2b906a71f6f8e9a9ef65bf8b670c97537cd6f7f043a814c82ab0ccb1de78', now() - interval '5 minutes'),
     ('Contenedor Entrada B', 'Edificio B - Acceso principal', 'activo',
      '$argon2id$v=19$m=65536,t=3,p=4$seed-hash-contenedor-entrada-b', now() - interval '2 hours')
 ON CONFLICT (nombre) DO NOTHING;
